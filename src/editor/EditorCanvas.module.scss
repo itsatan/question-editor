@@ -1,0 +1,21 @@
+.editor-canvas {
+    overflow: hidden;
+    min-height: 100%;
+    background-color: #fff;
+}
+
+.editor-component-wrapper {
+    margin: 12px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    padding: 12px;
+    cursor: pointer;
+
+    &:hover {
+        border-color: #d9d9d9;
+    }
+}
+
+.editor-component {
+    pointer-events: none;
+}

@@ -1,9 +1,6 @@
-function App() {
-	return (
-		<>
-			<h1>Vite + React</h1>
-		</>
-	)
-}
+import React from 'react'
+import Editor from './editor'
+
+const App: React.FC = () => <Editor />
 
 export default App
