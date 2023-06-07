@@ -16,6 +16,7 @@ module.exports = {
 		'no-undef': 'off',
 		'prettier/prettier': 'error',
 		'react-refresh/only-export-components': 'warn',
+		'@typescript-eslint/no-explicit-any': 'off',
 		// React17之后使用JSX不需要在引入React，关闭规则
 		'react/jsx-uses-react': 'off',
 		'react/react-in-jsx-scope': 'off',
