@@ -4,7 +4,7 @@ import { Tabs } from 'antd'
 import ComponentLib from './componentLib'
 
 const LeftPanel: React.FC = () => {
-	const tabsItem = [
+	const tabsItems = [
 		{
 			key: 'componentLib',
 			label: (
@@ -27,7 +27,7 @@ const LeftPanel: React.FC = () => {
 		},
 	]
 
-	return <Tabs defaultActiveKey="componentLib" items={tabsItem} />
+	return <Tabs defaultActiveKey="componentLib" items={tabsItems} />
 }
 
 export default LeftPanel

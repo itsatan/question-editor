@@ -15,6 +15,7 @@ export type ComponentConfType = {
 	title: string
 	type: string
 	Component: React.FC<ComponentPropsType>
+	AttributeComponent: React.FC<ComponentPropsType>
 	defaultProps: ComponentPropsType
 }
 

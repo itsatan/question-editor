@@ -8,10 +8,14 @@ import { STATE_TYPE } from '@/store'
 const useGetComponentInfo = () => {
 	const question = useSelector((state: STATE_TYPE) => state.question)
 
-	const { componentList = [] } = question
+	const { selectedId = '', componentList = [] } = question
+
+	const selectedComponent = componentList.find(c => c.fe_id === selectedId)
 
 	return {
+		selectedId,
 		componentList,
+		selectedComponent,
 	}
 }
 

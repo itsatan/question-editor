@@ -26,6 +26,14 @@ const getCurrentSelectedComponentIndex = (
 	return componentList.findIndex(c => c.fe_id === selectedId)
 }
 
+// 获取当前选中组件
+const getCurrentSelectedComponent = (
+	componentList: Array<ComponentInfoType>,
+	selectedId: string
+) => {
+	return componentList.find(c => c.fe_id === selectedId)
+}
+
 export const questionSlice = createSlice({
 	name: 'question',
 	initialState: INIT_STATE,
@@ -55,8 +63,24 @@ export const questionSlice = createSlice({
 			// 选中新组件
 			state.selectedId = newComponent.fe_id
 		},
+		// 修改组件属性
+		changeComponentProps: (
+			state: INIT_STATE_TYPE,
+			action: PayloadAction<{ fe_id: string; newProps: ComponentPropsType }>
+		) => {
+			const { componentList } = state
+			const { fe_id, newProps } = action.payload
+
+			const currentComponent = getCurrentSelectedComponent(componentList, fe_id)
+			if (currentComponent === undefined) return
+			currentComponent.props = {
+				...currentComponent.props,
+				...newProps,
+			}
+		},
 	},
 })
 
-export const { resetComponents, changeSelectedId, addComponent } = questionSlice.actions
+export const { resetComponents, changeSelectedId, addComponent, changeComponentProps } =
+	questionSlice.actions
 export default questionSlice.reducer

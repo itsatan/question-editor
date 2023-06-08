@@ -4,6 +4,7 @@
  */
 
 import Component from './Component'
+import AttributeComponent from './AttributeComponent'
 import { QuestionTitleDefaultProps } from './interface'
 
 export * from './interface'
@@ -13,5 +14,6 @@ export default {
 	title: '标题',
 	type: 'QuestionTitle',
 	Component,
+	AttributeComponent,
 	defaultProps: QuestionTitleDefaultProps,
 }

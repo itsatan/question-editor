@@ -5,6 +5,7 @@ import { changeSelectedId } from '@/store/question'
 import useLoadQuestionData from '@/hooks/useLoadQuestionData'
 import LeftPanel from './LeftPanel'
 import EditorCanvas from './EditorCanvas'
+import RightPanel from './RightPanel'
 
 const Editor: React.FC = () => {
 	const { loading } = useLoadQuestionData()
@@ -26,7 +27,9 @@ const Editor: React.FC = () => {
 							<EditorCanvas loading={loading} />
 						</div>
 					</div>
-					<div className={styles['editor-right']}>Right</div>
+					<div className={styles['editor-right']}>
+						<RightPanel />
+					</div>
 				</div>
 			</div>
 		</div>

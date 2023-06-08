@@ -4,6 +4,7 @@
  */
 
 import Component from './Component'
+import AttributeComponent from './AttributeComponent'
 import { QuestionInputDefaultProps } from './interface'
 
 export * from './interface'
@@ -13,5 +14,6 @@ export default {
 	title: '输入框标题',
 	type: 'QuestionInput',
 	Component,
+	AttributeComponent,
 	defaultProps: QuestionInputDefaultProps,
 }

@@ -1,13 +1,12 @@
 import React from 'react'
 import { Spin } from 'antd'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { LoadingOutlined } from '@ant-design/icons'
 import classNames from 'classnames'
 import useGetComponentInfo from '@/hooks/useGetComponentInfo'
 import { getComponentConfByType } from '@/components'
 import { ComponentInfoType, changeSelectedId } from '@/store/question'
 import styles from './EditorCanvas.module.scss'
-import { STATE_TYPE } from '@/store'
 
 type EditorCanvasPropsType = {
 	loading: boolean
@@ -24,8 +23,7 @@ const genComponent = (componentInfo: ComponentInfoType) => {
 
 const EditorCanvas: React.FC<EditorCanvasPropsType> = props => {
 	const { loading } = props
-	const { componentList } = useGetComponentInfo()
-	const { selectedId } = useSelector((state: STATE_TYPE) => state.question)
+	const { componentList, selectedId } = useGetComponentInfo()
 	const dispatch = useDispatch()
 
 	// 修改selectedId
