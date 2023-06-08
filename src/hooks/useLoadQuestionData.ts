@@ -5,12 +5,18 @@
 import mock from '../../mock'
 import { useRequest } from 'ahooks'
 import { useDispatch } from 'react-redux'
-import { resetComponents } from '@/store/question'
+import { ComponentInfoType, resetComponents } from '@/store/question'
 
-function getQuestionData(): Promise<any> {
+type MockDataType = {
+	id: string
+	title: string
+	componentList: Array<ComponentInfoType>
+}
+
+function getQuestionData(): Promise<MockDataType> {
 	return new Promise(resolve => {
 		setTimeout(() => {
-			resolve(mock)
+			resolve(mock as MockDataType)
 		}, 1000)
 	})
 }
@@ -21,7 +27,14 @@ const useLoadQuestionData = () => {
 
 	if (data) {
 		const { componentList = [] } = data
-		dispatch(resetComponents({ componentList }))
+
+		// 初始化选中第一个组件
+		let selectedId = ''
+		if (componentList.length) {
+			selectedId = componentList[0].fe_id
+		}
+
+		dispatch(resetComponents({ componentList, selectedId }))
 	}
 
 	return {
