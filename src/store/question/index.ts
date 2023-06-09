@@ -1,5 +1,10 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { ComponentPropsType } from '@/components'
+import {
+	getCurrentSelectedComponent,
+	getCurrentSelectedComponentIndex,
+	getNextSelectedId,
+} from './utils'
 
 export type ComponentInfoType = {
 	fe_id: string
@@ -16,22 +21,6 @@ export type INIT_STATE_TYPE = {
 const INIT_STATE: INIT_STATE_TYPE = {
 	selectedId: '',
 	componentList: [],
-}
-
-// 获取当前选中组件的index
-const getCurrentSelectedComponentIndex = (
-	componentList: Array<ComponentInfoType>,
-	selectedId: string
-) => {
-	return componentList.findIndex(c => c.fe_id === selectedId)
-}
-
-// 获取当前选中组件
-const getCurrentSelectedComponent = (
-	componentList: Array<ComponentInfoType>,
-	selectedId: string
-) => {
-	return componentList.find(c => c.fe_id === selectedId)
 }
 
 export const questionSlice = createSlice({
@@ -78,9 +67,23 @@ export const questionSlice = createSlice({
 				...newProps,
 			}
 		},
+		// 删除选中组件
+		deleteSelectedComponent: (state: INIT_STATE_TYPE) => {
+			const { selectedId, componentList } = state
+			const currentComponent = getCurrentSelectedComponentIndex(componentList, selectedId)
+			// 重新计算 selectedId
+			state.selectedId = getNextSelectedId(selectedId, componentList)
+			// 删除组件
+			state.componentList.splice(currentComponent, 1)
+		},
 	},
 })
 
-export const { resetComponents, changeSelectedId, addComponent, changeComponentProps } =
-	questionSlice.actions
+export const {
+	resetComponents,
+	changeSelectedId,
+	addComponent,
+	changeComponentProps,
+	deleteSelectedComponent,
+} = questionSlice.actions
 export default questionSlice.reducer
