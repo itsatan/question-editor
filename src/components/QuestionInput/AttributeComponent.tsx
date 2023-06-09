@@ -8,7 +8,7 @@ import { QuestionInputPropsType } from '.'
 import { Form, Input } from 'antd'
 
 const QuestionInputAttributeComponent: React.FC<QuestionInputPropsType> = props => {
-	const { title, placeholder, onChange } = props
+	const { title, placeholder, onChange, disabled } = props
 
 	const [form] = Form.useForm()
 
@@ -28,6 +28,7 @@ const QuestionInputAttributeComponent: React.FC<QuestionInputPropsType> = props 
 			initialValues={{ title, placeholder }}
 			form={form}
 			onValuesChange={handleValuesChange}
+			disabled={disabled}
 		>
 			<Form.Item
 				label="标题内容"

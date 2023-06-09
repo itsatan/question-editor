@@ -45,11 +45,12 @@ const EditorCanvas: React.FC<EditorCanvasPropsType> = props => {
 			{componentList
 				.filter(c => !c.isHidden)
 				.map(c => {
-					const { fe_id } = c
+					const { fe_id, isLocked } = c
 					// 控制className
 					const classes = classNames({
 						[styles['editor-component-wrapper']]: true,
 						[styles['editor-selected']]: selectedId === fe_id,
+						[styles['editor-locked']]: isLocked,
 					})
 					return (
 						<div

@@ -23,3 +23,8 @@
 .editor-selected {
     border-color: #1890ff !important;
 }
+
+.editor-locked {
+    opacity: .5;
+    cursor: not-allowed;
+}

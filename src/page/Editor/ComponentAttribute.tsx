@@ -12,7 +12,7 @@ const ComponentAttribute: React.FC = () => {
 	const dispatch = useDispatch()
 	const { selectedComponent } = useGetComponentInfo()
 	if (selectedComponent === undefined) return <NotFound />
-	const { type, props } = selectedComponent
+	const { type, props, isHidden, isLocked } = selectedComponent
 	const componentConf = getComponentConfByType(type)
 	if (componentConf === undefined) return <NotFound />
 	const { AttributeComponent } = componentConf
@@ -23,7 +23,7 @@ const ComponentAttribute: React.FC = () => {
 		dispatch(changeComponentProps({ fe_id, newProps }))
 	}
 
-	return <AttributeComponent {...props} onChange={changeProps} />
+	return <AttributeComponent {...props} onChange={changeProps} disabled={isLocked || isHidden} />
 }
 
 export default ComponentAttribute

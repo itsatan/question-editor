@@ -11,6 +11,7 @@ export type ComponentInfoType = {
 	type: string
 	title: string
 	isHidden?: boolean
+	isLocked?: boolean
 	props: ComponentPropsType
 }
 
@@ -95,6 +96,15 @@ export const questionSlice = createSlice({
 				currentComponent.isHidden = isHidden
 			}
 		},
+		// 锁定/解锁 选中组件
+		toggleComponentLocked: (state: INIT_STATE_TYPE, action: PayloadAction<{ fe_id: string }>) => {
+			const { componentList } = state
+			const { fe_id } = action.payload
+			const currentComponent = getCurrentSelectedComponent(componentList, fe_id)
+			if (currentComponent) {
+				currentComponent.isLocked = !currentComponent.isLocked
+			}
+		},
 	},
 })
 
@@ -105,5 +115,6 @@ export const {
 	changeComponentProps,
 	deleteSelectedComponent,
 	changeComponentHidden,
+	toggleComponentLocked,
 } = questionSlice.actions
 export default questionSlice.reducer
