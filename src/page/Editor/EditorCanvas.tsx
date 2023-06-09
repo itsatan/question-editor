@@ -42,23 +42,25 @@ const EditorCanvas: React.FC<EditorCanvasPropsType> = props => {
 
 	return (
 		<div className={styles['editor-canvas']}>
-			{componentList.map(c => {
-				const { fe_id } = c
-				// 控制className
-				const classes = classNames({
-					[styles['editor-component-wrapper']]: true,
-					[styles['editor-selected']]: selectedId === fe_id,
-				})
-				return (
-					<div
-						key={fe_id}
-						className={classes}
-						onClick={event => handleChangeSelectedId(event, fe_id)}
-					>
-						<div className={styles['editor-component']}>{genComponent(c)}</div>
-					</div>
-				)
-			})}
+			{componentList
+				.filter(c => !c.isHidden)
+				.map(c => {
+					const { fe_id } = c
+					// 控制className
+					const classes = classNames({
+						[styles['editor-component-wrapper']]: true,
+						[styles['editor-selected']]: selectedId === fe_id,
+					})
+					return (
+						<div
+							key={fe_id}
+							className={classes}
+							onClick={event => handleChangeSelectedId(event, fe_id)}
+						>
+							<div className={styles['editor-component']}>{genComponent(c)}</div>
+						</div>
+					)
+				})}
 		</div>
 	)
 }

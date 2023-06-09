@@ -10,6 +10,7 @@ export type ComponentInfoType = {
 	fe_id: string
 	type: string
 	title: string
+	isHidden?: boolean
 	props: ComponentPropsType
 }
 
@@ -36,11 +37,9 @@ export const questionSlice = createSlice({
 		},
 		// 添加新组件
 		addComponent: (state: INIT_STATE_TYPE, action: PayloadAction<ComponentInfoType>) => {
-			const newComponent = action.payload
-
 			const { selectedId, componentList } = state
+			const newComponent = action.payload
 			const index = getCurrentSelectedComponentIndex(componentList, selectedId)
-
 			if (index < 0) {
 				// 未选中任何组件
 				state.componentList.push(newComponent)
@@ -48,7 +47,6 @@ export const questionSlice = createSlice({
 				// 选中了组件,插入到 index 后面
 				state.componentList.splice(index + 1, 0, newComponent)
 			}
-
 			// 选中新组件
 			state.selectedId = newComponent.fe_id
 		},
@@ -59,7 +57,6 @@ export const questionSlice = createSlice({
 		) => {
 			const { componentList } = state
 			const { fe_id, newProps } = action.payload
-
 			const currentComponent = getCurrentSelectedComponent(componentList, fe_id)
 			if (currentComponent === undefined) return
 			currentComponent.props = {
@@ -76,6 +73,28 @@ export const questionSlice = createSlice({
 			// 删除组件
 			state.componentList.splice(currentComponent, 1)
 		},
+		// 隐藏/显示 选中组件
+		changeComponentHidden: (
+			state: INIT_STATE_TYPE,
+			action: PayloadAction<{ fe_id: string; isHidden: boolean }>
+		) => {
+			const { componentList } = state
+			const { fe_id, isHidden } = action.payload
+			// 重新计算 selectedId
+			let newSelectedId = ''
+			if (isHidden) {
+				// 隐藏组件
+				newSelectedId = getNextSelectedId(fe_id, componentList)
+			} else {
+				// 显示组件
+				newSelectedId = fe_id
+			}
+			state.selectedId = newSelectedId
+			const currentComponent = getCurrentSelectedComponent(componentList, fe_id)
+			if (currentComponent) {
+				currentComponent.isHidden = isHidden
+			}
+		},
 	},
 })
 
@@ -85,5 +104,6 @@ export const {
 	addComponent,
 	changeComponentProps,
 	deleteSelectedComponent,
+	changeComponentHidden,
 } = questionSlice.actions
 export default questionSlice.reducer
