@@ -1,9 +1,12 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { nanoid } from 'nanoid'
+import cloneDeep from 'lodash.clonedeep'
 import { ComponentPropsType } from '@/components'
 import {
 	getCurrentSelectedComponent,
 	getCurrentSelectedComponentIndex,
 	getNextSelectedId,
+	insertNewComponent,
 } from './utils'
 
 export type ComponentInfoType = {
@@ -18,11 +21,13 @@ export type ComponentInfoType = {
 export type INIT_STATE_TYPE = {
 	selectedId: string
 	componentList: Array<ComponentInfoType>
+	copiedComponent: ComponentInfoType | null
 }
 
 const INIT_STATE: INIT_STATE_TYPE = {
 	selectedId: '',
 	componentList: [],
+	copiedComponent: null,
 }
 
 export const questionSlice = createSlice({
@@ -38,18 +43,8 @@ export const questionSlice = createSlice({
 		},
 		// 添加新组件
 		addComponent: (state: INIT_STATE_TYPE, action: PayloadAction<ComponentInfoType>) => {
-			const { selectedId, componentList } = state
 			const newComponent = action.payload
-			const index = getCurrentSelectedComponentIndex(componentList, selectedId)
-			if (index < 0) {
-				// 未选中任何组件
-				state.componentList.push(newComponent)
-			} else {
-				// 选中了组件,插入到 index 后面
-				state.componentList.splice(index + 1, 0, newComponent)
-			}
-			// 选中新组件
-			state.selectedId = newComponent.fe_id
+			insertNewComponent(state, newComponent)
 		},
 		// 修改组件属性
 		changeComponentProps: (
@@ -59,7 +54,7 @@ export const questionSlice = createSlice({
 			const { componentList } = state
 			const { fe_id, newProps } = action.payload
 			const currentComponent = getCurrentSelectedComponent(componentList, fe_id)
-			if (currentComponent === undefined) return
+			if (!currentComponent) return
 			currentComponent.props = {
 				...currentComponent.props,
 				...newProps,
@@ -92,18 +87,32 @@ export const questionSlice = createSlice({
 			}
 			state.selectedId = newSelectedId
 			const currentComponent = getCurrentSelectedComponent(componentList, fe_id)
-			if (currentComponent) {
-				currentComponent.isHidden = isHidden
-			}
+			if (!currentComponent) return
+			currentComponent.isHidden = isHidden
 		},
 		// 锁定/解锁 选中组件
 		toggleComponentLocked: (state: INIT_STATE_TYPE, action: PayloadAction<{ fe_id: string }>) => {
 			const { componentList } = state
 			const { fe_id } = action.payload
 			const currentComponent = getCurrentSelectedComponent(componentList, fe_id)
-			if (currentComponent) {
-				currentComponent.isLocked = !currentComponent.isLocked
-			}
+			if (!currentComponent) return
+			currentComponent.isLocked = !currentComponent.isLocked
+		},
+		// 拷贝当前选中的组件
+		copyCurrentSelectedComponent: (state: INIT_STATE_TYPE) => {
+			const { selectedId, componentList } = state
+			const currentComponent = getCurrentSelectedComponent(componentList, selectedId)
+			if (!currentComponent) return
+			// 深拷贝数据
+			state.copiedComponent = cloneDeep(currentComponent)
+		},
+		// 粘贴组件
+		pasteCopiedComponent: (state: INIT_STATE_TYPE) => {
+			const { copiedComponent } = state
+			if (!copiedComponent) return
+			// 注意：此处必须修改id，保证唯一性
+			copiedComponent.fe_id = nanoid()
+			insertNewComponent(state, copiedComponent)
 		},
 	},
 })
@@ -116,5 +125,7 @@ export const {
 	deleteSelectedComponent,
 	changeComponentHidden,
 	toggleComponentLocked,
+	copyCurrentSelectedComponent,
+	pasteCopiedComponent,
 } = questionSlice.actions
 export default questionSlice.reducer

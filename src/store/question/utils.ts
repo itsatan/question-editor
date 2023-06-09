@@ -1,4 +1,4 @@
-import { ComponentInfoType } from '.'
+import { ComponentInfoType, INIT_STATE_TYPE } from '.'
 
 /**
  * 获取当前选中组件的index
@@ -47,4 +47,21 @@ export const getNextSelectedId = (fe_id: string, componentList: Array<ComponentI
 		}
 	}
 	return newSelectedId
+}
+
+/**
+ * 插入新组件
+ */
+export const insertNewComponent = (state: INIT_STATE_TYPE, newComponent: ComponentInfoType) => {
+	const { selectedId, componentList } = state
+	const index = getCurrentSelectedComponentIndex(componentList, selectedId)
+	if (index < 0) {
+		// 未选中任何组件
+		state.componentList.push(newComponent)
+	} else {
+		// 选中了组件,插入到 index 后面
+		state.componentList.splice(index + 1, 0, newComponent)
+	}
+	// 选中新组件
+	state.selectedId = newComponent.fe_id
 }
