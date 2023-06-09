@@ -3,8 +3,9 @@ import { Spin } from 'antd'
 import { useDispatch } from 'react-redux'
 import { LoadingOutlined } from '@ant-design/icons'
 import classNames from 'classnames'
-import useGetComponentInfo from '@/hooks/useGetComponentInfo'
 import { getComponentConfByType } from '@/components'
+import useGetComponentInfo from '@/hooks/useGetComponentInfo'
+import useBindCanvasKeyPress from '@/hooks/useBindCanvasKeyPress'
 import { ComponentInfoType, changeSelectedId } from '@/store/question'
 import styles from './EditorCanvas.module.scss'
 
@@ -25,6 +26,9 @@ const EditorCanvas: React.FC<EditorCanvasPropsType> = props => {
 	const { loading } = props
 	const { componentList, selectedId } = useGetComponentInfo()
 	const dispatch = useDispatch()
+
+	// 快捷键
+	useBindCanvasKeyPress()
 
 	// 修改selectedId
 	const handleChangeSelectedId = (event: React.MouseEvent<HTMLDivElement>, fe_id: string) => {
