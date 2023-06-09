@@ -1,6 +1,9 @@
 import React from 'react'
-import Editor from './editor'
+import { RouterProvider } from 'react-router-dom'
+import router from './routers'
 
-const App: React.FC = () => <Editor />
+const App: React.FC = () => {
+	return <RouterProvider router={router} />
+}
 
 export default App

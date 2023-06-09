@@ -6,6 +6,7 @@ import useLoadQuestionData from '@/hooks/useLoadQuestionData'
 import LeftPanel from './LeftPanel'
 import EditorCanvas from './EditorCanvas'
 import RightPanel from './RightPanel'
+import EditorHeader from './EditorHeader'
 
 const Editor: React.FC = () => {
 	const { loading } = useLoadQuestionData()
@@ -16,7 +17,7 @@ const Editor: React.FC = () => {
 	}
 	return (
 		<div className={styles['editor-container']}>
-			<div>Header</div>
+			<EditorHeader />
 			<div className={styles['editor-content-wrapper']}>
 				<div className={styles['editor-content']}>
 					<div className={styles['editor-left']}>

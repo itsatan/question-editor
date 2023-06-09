@@ -1,0 +1,29 @@
+.editor-header-wrapper {
+    border-bottom: 1px solid #e8e8e8;
+    padding: 12px 0;
+    background-color: #fff;
+}
+
+.editor-header {
+    display: flex;
+    margin: 0 24px;
+
+    h5 {
+        margin-bottom: 0;
+        line-height: 1;
+    }
+
+    .left {
+        flex: 1;
+    }
+
+    .main {
+        flex: 1;
+        text-align: center;
+    }
+
+    .right {
+        flex: 1;
+        text-align: right;
+    }
+}
