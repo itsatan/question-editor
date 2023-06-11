@@ -6,7 +6,7 @@
 export type QuestionTitlePropsType = {
 	text?: string
 	level?: 1 | 2 | 3 | 4 | 5
-	isCenter?: false
+	isCenter?: boolean
 
 	onChange?: (newProps: QuestionTitlePropsType) => void
 	disabled?: boolean
