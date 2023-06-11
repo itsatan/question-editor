@@ -114,6 +114,25 @@ export const questionSlice = createSlice({
 			copiedComponent.fe_id = nanoid()
 			insertNewComponent(state, copiedComponent)
 		},
+		// 选中上一个
+		selectPrevComponent: (state: INIT_STATE_TYPE) => {
+			const { selectedId, componentList } = state
+			const selectedIndex = getCurrentSelectedComponentIndex(componentList, selectedId)
+			//未选中组件 或 选中了第一个 无法向上选择
+			if (selectedIndex <= 0) return
+			state.selectedId = componentList[selectedIndex - 1].fe_id
+		},
+		// 选中下一个
+		selectNextComponent: (state: INIT_STATE_TYPE) => {
+			const { selectedId, componentList } = state
+			const selectedIndex = getCurrentSelectedComponentIndex(componentList, selectedId)
+			// 未选中组件
+			if (selectedIndex < 0) return
+			const length = componentList.length
+			// 选中了最后一个 无法向下选择
+			if (selectedIndex + 1 === length) return
+			state.selectedId = componentList[selectedIndex + 1].fe_id
+		},
 	},
 })
 
@@ -127,5 +146,7 @@ export const {
 	toggleComponentLocked,
 	copyCurrentSelectedComponent,
 	pasteCopiedComponent,
+	selectPrevComponent,
+	selectNextComponent,
 } = questionSlice.actions
 export default questionSlice.reducer

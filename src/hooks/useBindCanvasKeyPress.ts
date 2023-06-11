@@ -8,6 +8,8 @@ import {
 	copyCurrentSelectedComponent,
 	deleteSelectedComponent,
 	pasteCopiedComponent,
+	selectNextComponent,
+	selectPrevComponent,
 } from '@/store/question'
 import useGetComponentInfo from './useGetComponentInfo'
 import { message } from 'antd'
@@ -39,6 +41,16 @@ const useBindCanvasKeyPress = () => {
 	useKeyPress(['ctrl.v', 'meta.v'], () => {
 		if (!isActiveElementValid()) return
 		dispatch(pasteCopiedComponent())
+	})
+	// 选中上一个
+	useKeyPress('uparrow', () => {
+		if (!isActiveElementValid()) return
+		dispatch(selectPrevComponent())
+	})
+	// 选中下一个
+	useKeyPress('downarrow', () => {
+		if (!isActiveElementValid()) return
+		dispatch(selectNextComponent())
 	})
 }
 

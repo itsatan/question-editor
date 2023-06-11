@@ -2,7 +2,9 @@
     "cSpell.words": [
         "clonedeep",
         "commitlint",
+        "downarrow",
         "immer",
-        "reduxjs"
+        "reduxjs",
+        "uparrow"
     ]
 }
