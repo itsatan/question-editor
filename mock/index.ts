@@ -56,5 +56,17 @@ export default {
 				isCenter: false,
 			},
 		},
+		// TextArea
+		{
+			fe_id: nanoid(),
+			type: 'QuestionTextArea',
+			title: '多行输入框',
+			isHidden: false,
+			isLocked: false,
+			props: {
+				title: '多行输入标题',
+				placeholder: '请输入...',
+			},
+		},
 	],
 }
