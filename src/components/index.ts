@@ -7,11 +7,13 @@ import React from 'react'
 import QuestionTitleConf, { QuestionTitlePropsType } from './QuestionTitle'
 import QuestionInputConf, { QuestionInputPropsType } from './QuestionInput'
 import QuestionParagraphConf, { QuestionParagraphPropsType } from './QuestionParagraph'
+import QuestionInfoConf, { QuestionInfoPropsType } from './QuestionInfo'
 
 // 各个组件的PropsType
 export type ComponentPropsType = QuestionTitlePropsType &
 	QuestionInputPropsType &
-	QuestionParagraphPropsType
+	QuestionParagraphPropsType &
+	QuestionInfoPropsType
 
 // 组件配置的Type
 export type ComponentConfType = {
@@ -27,6 +29,7 @@ const componentConfList: Array<ComponentConfType> = [
 	QuestionTitleConf,
 	QuestionInputConf,
 	QuestionParagraphConf,
+	QuestionInfoConf,
 ]
 
 // 通过Type获取组件配置
@@ -39,7 +42,7 @@ export const componentConfGroup = [
 	{
 		groupId: 'textGroup',
 		groupName: '文本显示',
-		components: [QuestionTitleConf, QuestionParagraphConf],
+		components: [QuestionInfoConf, QuestionTitleConf, QuestionParagraphConf],
 	},
 	{
 		groupId: 'inputGroup',
