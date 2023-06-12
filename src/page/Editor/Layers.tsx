@@ -1,9 +1,15 @@
 import React, { ChangeEvent, useRef, useState } from 'react'
 import classNames from 'classnames'
-import useGetComponentInfo from '@/hooks/useGetComponentInfo'
-import { Input, InputRef, message } from 'antd'
 import { useDispatch } from 'react-redux'
-import { changeComponentTitle, changeSelectedId } from '@/store/question'
+import { Button, Input, InputRef, Space, message } from 'antd'
+import { EyeInvisibleOutlined, LockOutlined } from '@ant-design/icons'
+import useGetComponentInfo from '@/hooks/useGetComponentInfo'
+import {
+	changeComponentHidden,
+	changeComponentTitle,
+	changeSelectedId,
+	toggleComponentLocked,
+} from '@/store/question'
 import styles from './Layers.module.scss'
 
 const Layers: React.FC = () => {
@@ -40,10 +46,20 @@ const Layers: React.FC = () => {
 		dispatch(changeComponentTitle({ fe_id: selectedId, title: newTitle }))
 	}
 
+	// 切换 隐藏/显示
+	const toggleHidden = (fe_id: string, isHidden: boolean) => {
+		dispatch(changeComponentHidden({ fe_id, isHidden }))
+	}
+
+	// 切换 锁定/解锁
+	const toggleLocked = (fe_id: string) => {
+		dispatch(toggleComponentLocked({ fe_id }))
+	}
+
 	return (
 		<>
 			{componentList.map(c => {
-				const { fe_id, title } = c
+				const { fe_id, title, isHidden, isLocked } = c
 				// 控制className
 				const classes = classNames({
 					[styles.title]: true,
@@ -63,7 +79,26 @@ const Layers: React.FC = () => {
 							)}
 							{fe_id !== changingTitle && title}
 						</div>
-						<div className={styles.handler}>按钮</div>
+						<div className={styles.handler}>
+							<Space>
+								<Button
+									size="small"
+									shape="circle"
+									className={!isHidden ? styles.btn : ''}
+									type={isHidden ? 'primary' : 'text'}
+									icon={<EyeInvisibleOutlined />}
+									onClick={() => toggleHidden(fe_id, !isHidden)}
+								/>
+								<Button
+									size="small"
+									shape="circle"
+									className={!isLocked ? styles.btn : ''}
+									type={isLocked ? 'primary' : 'text'}
+									icon={<LockOutlined />}
+									onClick={() => toggleLocked(fe_id)}
+								/>
+							</Space>
+						</div>
 					</div>
 				)
 			})}
