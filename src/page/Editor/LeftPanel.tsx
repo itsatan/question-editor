@@ -27,7 +27,13 @@ const LeftPanel: React.FC = () => {
 		},
 	]
 
-	return <Tabs defaultActiveKey="componentLib" items={tabsItems} />
+	return (
+		<Tabs
+			style={{ height: 'calc(100vh - 81px)' }}
+			defaultActiveKey="componentLib"
+			items={tabsItems}
+		/>
+	)
 }
 
 export default LeftPanel
