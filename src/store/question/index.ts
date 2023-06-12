@@ -133,6 +133,17 @@ export const questionSlice = createSlice({
 			if (selectedIndex + 1 === length) return
 			state.selectedId = componentList[selectedIndex + 1].fe_id
 		},
+		// 修改组件标题
+		changeComponentTitle: (
+			state: INIT_STATE_TYPE,
+			action: PayloadAction<{ fe_id: string; title: string }>
+		) => {
+			const { componentList } = state
+			const { fe_id, title } = action.payload
+			const currentComponent = getCurrentSelectedComponent(componentList, fe_id)
+			if (!currentComponent) return
+			currentComponent.title = title
+		},
 	},
 })
 
@@ -148,5 +159,6 @@ export const {
 	pasteCopiedComponent,
 	selectPrevComponent,
 	selectNextComponent,
+	changeComponentTitle,
 } = questionSlice.actions
 export default questionSlice.reducer
