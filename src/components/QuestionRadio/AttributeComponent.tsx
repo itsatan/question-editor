@@ -10,21 +10,21 @@ import { PlusOutlined, MinusCircleOutlined } from '@ant-design/icons'
 import { OptionType, QuestionRadioPropsType } from './interface'
 
 const QuestionRadioAttributeComponent: React.FC<QuestionRadioPropsType> = props => {
-	const { title, value, options = [], isVertical, onChange, disabled } = props
+	const { title, value, radio_options = [], isVertical, onChange, disabled } = props
 
 	const [form] = Form.useForm()
 
 	// 监测属性变化重新赋值
 	useEffect(() => {
-		const values = options.map(opt => opt.value)
+		const values = radio_options.map(opt => opt.value)
 		form.setFieldsValue({
 			title,
 			// 如果默认选中了该选项并删除了它 重置value
 			value: values.includes(value) ? value : undefined,
-			options,
+			radio_options,
 			isVertical,
 		})
-	}, [title, value, options, isVertical, form])
+	}, [title, value, radio_options, isVertical, form])
 
 	// 同步数据变化
 	const handleValuesChange = () => {
@@ -35,7 +35,7 @@ const QuestionRadioAttributeComponent: React.FC<QuestionRadioPropsType> = props 
 		<Form
 			form={form}
 			layout="vertical"
-			initialValues={{ title, value, options, isVertical }}
+			initialValues={{ title, value, radio_options, isVertical }}
 			onValuesChange={handleValuesChange}
 			disabled={disabled}
 		>
@@ -47,9 +47,10 @@ const QuestionRadioAttributeComponent: React.FC<QuestionRadioPropsType> = props 
 				<Input />
 			</Form.Item>
 			<Form.Item label="选项">
-				<Form.List name="options">
+				<Form.List name="radio_options">
 					{(fields, { add, remove }) => (
 						<>
+							{/* 遍历所有可选项 可删除 */}
 							{fields.map(({ key, name }, index) => {
 								return (
 									<Space key={key} align="baseline">
@@ -61,9 +62,9 @@ const QuestionRadioAttributeComponent: React.FC<QuestionRadioPropsType> = props 
 												{
 													// 校验重复项
 													validator: (_, label) => {
-														const { options } = form.getFieldsValue()
+														const { radio_options } = form.getFieldsValue()
 														let count = 0
-														options.forEach((opt: OptionType) => {
+														radio_options.forEach((opt: OptionType) => {
 															if (opt.label === label) count++
 														})
 														if (count === 1) return Promise.resolve()
@@ -96,7 +97,7 @@ const QuestionRadioAttributeComponent: React.FC<QuestionRadioPropsType> = props 
 			</Form.Item>
 			<Form.Item label="默认选中" name="value" initialValue={value}>
 				{/* 没有填写label 不显示到默认选中列表中 */}
-				<Select options={options.filter(opt => Boolean(opt.label))} />
+				<Select options={radio_options.filter(opt => Boolean(opt.label))} />
 			</Form.Item>
 			<Form.Item name="isVertical" valuePropName="checked">
 				<Checkbox>竖向排列</Checkbox>

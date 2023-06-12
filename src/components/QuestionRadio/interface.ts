@@ -1,17 +1,17 @@
+export type OptionType = {
+	label: string
+	value: string | undefined
+}
 /**
  * title 标题内容
  * value 当前选中项
  * options 单选按钮组
  * isVertical 竖向排列
  */
-export type OptionType = {
-	label: string
-	value: string | undefined
-}
 export type QuestionRadioPropsType = {
 	title?: string
 	value?: string | undefined
-	options?: Array<OptionType>
+	radio_options?: Array<OptionType>
 	isVertical?: boolean
 
 	onChange?: (newProps: QuestionRadioPropsType) => void
@@ -24,7 +24,7 @@ export type QuestionRadioPropsType = {
 export const QuestionRadioDefaultProps: QuestionRadioPropsType = {
 	title: '单选标题',
 	value: '',
-	options: [
+	radio_options: [
 		{ label: '选项1', value: '1' },
 		{ label: '选项2', value: '2' },
 		{ label: '选项3', value: '3' },

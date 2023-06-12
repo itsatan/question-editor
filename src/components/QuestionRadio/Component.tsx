@@ -13,7 +13,7 @@ const QuestionRadioComponent: React.FC<QuestionRadioPropsType> = props => {
 	const {
 		title = '单选标题',
 		value = '',
-		options = [
+		radio_options = [
 			{ label: '选项1', value: '1' },
 			{ label: '选项2', value: '2' },
 			{ label: '选项3', value: '3' },
@@ -26,7 +26,7 @@ const QuestionRadioComponent: React.FC<QuestionRadioPropsType> = props => {
 			<Paragraph strong>{title}</Paragraph>
 			<Radio.Group value={value}>
 				<Space direction={isVertical ? 'vertical' : 'horizontal'}>
-					{options
+					{radio_options
 						.filter(opt => Boolean(opt.label)) // 没有填写label 不显示到画布Radio组件中
 						.map(opt => {
 							const { label, value } = opt

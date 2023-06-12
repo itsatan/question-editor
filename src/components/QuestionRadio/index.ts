@@ -9,6 +9,7 @@ import { QuestionRadioDefaultProps } from './interface'
 
 export * from './interface'
 
+// Radio组件配置
 export default {
 	title: '单选框',
 	type: 'QuestionRadio',

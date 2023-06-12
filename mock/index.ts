@@ -78,10 +78,29 @@ export default {
 			props: {
 				title: '单选标题',
 				value: undefined,
-				options: [
-					{ label: '选项1', value: 1 },
-					{ label: '选项2', value: 2 },
-					{ label: '选项3', value: 3 },
+				radio_options: [
+					{ label: '选项1', value: '1' },
+					{ label: '选项2', value: '2' },
+					{ label: '选项3', value: '3' },
+				],
+				isVertical: false,
+			},
+		},
+		// Checkbox
+		{
+			fe_id: nanoid(),
+			type: 'QuestionCheckbox',
+			title: '复选',
+			isHidden: false,
+			isLocked: false,
+			props: {
+				title: '复选标题',
+				value: undefined,
+				checkbox_options: [
+					{ label: '选项1', value: '1', checked: false },
+					{ label: '选项2', value: '2', checked: false },
+					{ label: '选项3', value: '3', checked: false },
+					{ label: '选项4', value: '4', checked: false },
 				],
 				isVertical: false,
 			},
