@@ -68,5 +68,23 @@ export default {
 				placeholder: '请输入...',
 			},
 		},
+		// Radio
+		{
+			fe_id: nanoid(),
+			type: 'QuestionRadio',
+			title: '单选',
+			isHidden: false,
+			isLocked: false,
+			props: {
+				title: '单选标题',
+				value: undefined,
+				options: [
+					{ label: '选项1', value: 1 },
+					{ label: '选项2', value: 2 },
+					{ label: '选项3', value: 3 },
+				],
+				isVertical: false,
+			},
+		},
 	],
 }

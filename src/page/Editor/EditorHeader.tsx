@@ -1,7 +1,7 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Button, Space, Typography } from 'antd'
-import { LeftOutlined } from '@ant-design/icons'
+import { LeftOutlined, CheckOutlined, CloudUploadOutlined } from '@ant-design/icons'
 import EditorToolbar from './EditorToolbar'
 import styles from './EditorHeader.module.scss'
 
@@ -25,8 +25,12 @@ const EditorHeader: React.FC = () => {
 				</div>
 				<div className={styles.right}>
 					<Space>
-						<Button type="default">保存</Button>
-						<Button type="primary">发布</Button>
+						<Button type="default" icon={<CheckOutlined />}>
+							保存
+						</Button>
+						<Button type="primary" icon={<CloudUploadOutlined />}>
+							发布
+						</Button>
 					</Space>
 				</div>
 			</div>
