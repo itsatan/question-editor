@@ -2,7 +2,7 @@ import React, { ChangeEvent, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Button, Input, InputRef, Space, Typography } from 'antd'
 import { LeftOutlined, CheckOutlined, CloudUploadOutlined, EditOutlined } from '@ant-design/icons'
-import { useKeyPress, useRequest } from 'ahooks'
+import { useDebounceEffect, useKeyPress, useRequest } from 'ahooks'
 import { useDispatch } from 'react-redux'
 import useGetPageInfo from '@/hooks/useGetPageInfo'
 import useGetComponentInfo from '@/hooks/useGetComponentInfo'
@@ -70,6 +70,14 @@ const ManualSaveButton: React.FC = () => {
 		if (loading) return
 		save()
 	})
+	// 自动保存（不是定时器）
+	useDebounceEffect(
+		() => {
+			save()
+		},
+		[componentList, pageInfo], // 监测数据变化
+		{ wait: 1000 } // 防抖延迟执行时间
+	)
 	return (
 		<Button
 			type="default"
@@ -82,6 +90,7 @@ const ManualSaveButton: React.FC = () => {
 		</Button>
 	)
 }
+
 const EditorHeader: React.FC = () => {
 	const navigate = useNavigate()
 	return (
