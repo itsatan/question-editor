@@ -1,6 +1,6 @@
 import React, { ChangeEvent, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Button, Input, InputRef, Space, Typography } from 'antd'
+import { Button, Input, InputRef, Space, Typography, message } from 'antd'
 import { LeftOutlined, CheckOutlined, CloudUploadOutlined, EditOutlined } from '@ant-design/icons'
 import { useDebounceEffect, useKeyPress, useRequest } from 'ahooks'
 import { useDispatch } from 'react-redux'
@@ -10,6 +10,7 @@ import { ComponentInfoType } from '@/store/question'
 import { PAGE_INFO_INIT_STATE_TYPE, changePageTitle } from '@/store/pageInfo'
 import EditorToolbar from './EditorToolbar'
 import styles from './EditorHeader.module.scss'
+import { HOME_PATH } from '@/routers'
 
 const { Title } = Typography
 
@@ -48,7 +49,7 @@ const TitleElem: React.FC = () => {
 	)
 }
 // 手动保存
-function manualSave(
+function manualSaveMock(
 	componentList: Array<ComponentInfoType>,
 	pageInfo: PAGE_INFO_INIT_STATE_TYPE
 ): Promise<{ componentList: Array<ComponentInfoType>; pageInfo: PAGE_INFO_INIT_STATE_TYPE }> {
@@ -61,7 +62,7 @@ function manualSave(
 const ManualSaveButton: React.FC = () => {
 	const { componentList } = useGetComponentInfo()
 	const pageInfo = useGetPageInfo()
-	const { loading, run: save } = useRequest(() => manualSave(componentList, pageInfo), {
+	const { loading, run: save } = useRequest(() => manualSaveMock(componentList, pageInfo), {
 		manual: true,
 	})
 	// 快捷键手动保存
@@ -90,6 +91,35 @@ const ManualSaveButton: React.FC = () => {
 		</Button>
 	)
 }
+// 发布
+function publishMock(): Promise<boolean> {
+	return new Promise(resolve => {
+		setTimeout(() => {
+			resolve(true)
+		}, 1200)
+	})
+}
+const PublishButton: React.FC = () => {
+	const navigate = useNavigate()
+	const { loading, run: pub } = useRequest(() => publishMock(), {
+		manual: true,
+		onSuccess: () => {
+			message.success('发布成功')
+			navigate(HOME_PATH)
+		},
+	})
+	return (
+		<Button
+			type="primary"
+			disabled={loading}
+			loading={loading}
+			icon={<CloudUploadOutlined />}
+			onClick={pub}
+		>
+			发布
+		</Button>
+	)
+}
 
 const EditorHeader: React.FC = () => {
 	const navigate = useNavigate()
@@ -110,9 +140,7 @@ const EditorHeader: React.FC = () => {
 				<div className={styles.right}>
 					<Space>
 						<ManualSaveButton />
-						<Button type="primary" icon={<CloudUploadOutlined />}>
-							发布
-						</Button>
+						<PublishButton />
 					</Space>
 				</div>
 			</div>
