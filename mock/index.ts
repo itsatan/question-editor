@@ -6,6 +6,9 @@ import { nanoid } from 'nanoid'
 export default {
 	id: nanoid(),
 	title: '测试问卷编辑器',
+	description: '问卷描述',
+	css: undefined,
+	js: undefined,
 	componentList: [
 		// Info
 		{

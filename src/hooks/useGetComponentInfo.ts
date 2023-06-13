@@ -3,7 +3,7 @@
  * @author ITSATAN
  */
 import { useSelector } from 'react-redux'
-import { STATE_TYPE } from '@/store'
+import type { STATE_TYPE } from '@/store'
 
 const useGetComponentInfo = () => {
 	const question = useSelector((state: STATE_TYPE) => state.question)

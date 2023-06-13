@@ -18,13 +18,13 @@ export type ComponentInfoType = {
 	props: ComponentPropsType
 }
 
-export type INIT_STATE_TYPE = {
+export type QUESTION_INIT_STATE_TYPE = {
 	selectedId: string
 	componentList: Array<ComponentInfoType>
 	copiedComponent: ComponentInfoType | null
 }
 
-const INIT_STATE: INIT_STATE_TYPE = {
+const INIT_STATE: QUESTION_INIT_STATE_TYPE = {
 	selectedId: '',
 	componentList: [],
 	copiedComponent: null,
@@ -35,20 +35,22 @@ export const questionSlice = createSlice({
 	initialState: INIT_STATE,
 	reducers: {
 		// 重置所有组件
-		resetComponents: (_state: INIT_STATE_TYPE, action: PayloadAction<INIT_STATE_TYPE>) =>
-			action.payload,
+		resetComponents: (
+			_state: QUESTION_INIT_STATE_TYPE,
+			action: PayloadAction<QUESTION_INIT_STATE_TYPE>
+		) => action.payload,
 		// 修改selectedId
-		changeSelectedId: (state: INIT_STATE_TYPE, action: PayloadAction<string>) => {
+		changeSelectedId: (state: QUESTION_INIT_STATE_TYPE, action: PayloadAction<string>) => {
 			state.selectedId = action.payload
 		},
 		// 添加新组件
-		addComponent: (state: INIT_STATE_TYPE, action: PayloadAction<ComponentInfoType>) => {
+		addComponent: (state: QUESTION_INIT_STATE_TYPE, action: PayloadAction<ComponentInfoType>) => {
 			const newComponent = action.payload
 			insertNewComponent(state, newComponent)
 		},
 		// 修改组件属性
 		changeComponentProps: (
-			state: INIT_STATE_TYPE,
+			state: QUESTION_INIT_STATE_TYPE,
 			action: PayloadAction<{ fe_id: string; newProps: ComponentPropsType }>
 		) => {
 			const { componentList } = state
@@ -61,7 +63,7 @@ export const questionSlice = createSlice({
 			}
 		},
 		// 删除选中组件
-		deleteSelectedComponent: (state: INIT_STATE_TYPE) => {
+		deleteSelectedComponent: (state: QUESTION_INIT_STATE_TYPE) => {
 			const { selectedId, componentList } = state
 			const currentComponent = getCurrentSelectedComponentIndex(componentList, selectedId)
 			// 重新计算 selectedId
@@ -71,7 +73,7 @@ export const questionSlice = createSlice({
 		},
 		// 隐藏/显示 选中组件
 		changeComponentHidden: (
-			state: INIT_STATE_TYPE,
+			state: QUESTION_INIT_STATE_TYPE,
 			action: PayloadAction<{ fe_id: string; isHidden: boolean }>
 		) => {
 			const { componentList } = state
@@ -91,7 +93,10 @@ export const questionSlice = createSlice({
 			currentComponent.isHidden = isHidden
 		},
 		// 锁定/解锁 选中组件
-		toggleComponentLocked: (state: INIT_STATE_TYPE, action: PayloadAction<{ fe_id: string }>) => {
+		toggleComponentLocked: (
+			state: QUESTION_INIT_STATE_TYPE,
+			action: PayloadAction<{ fe_id: string }>
+		) => {
 			const { componentList } = state
 			const { fe_id } = action.payload
 			const currentComponent = getCurrentSelectedComponent(componentList, fe_id)
@@ -99,7 +104,7 @@ export const questionSlice = createSlice({
 			currentComponent.isLocked = !currentComponent.isLocked
 		},
 		// 拷贝当前选中的组件
-		copyCurrentSelectedComponent: (state: INIT_STATE_TYPE) => {
+		copyCurrentSelectedComponent: (state: QUESTION_INIT_STATE_TYPE) => {
 			const { selectedId, componentList } = state
 			const currentComponent = getCurrentSelectedComponent(componentList, selectedId)
 			if (!currentComponent) return
@@ -107,7 +112,7 @@ export const questionSlice = createSlice({
 			state.copiedComponent = cloneDeep(currentComponent)
 		},
 		// 粘贴组件
-		pasteCopiedComponent: (state: INIT_STATE_TYPE) => {
+		pasteCopiedComponent: (state: QUESTION_INIT_STATE_TYPE) => {
 			const { copiedComponent } = state
 			if (!copiedComponent) return
 			// 注意：此处必须修改id，保证唯一性
@@ -115,7 +120,7 @@ export const questionSlice = createSlice({
 			insertNewComponent(state, copiedComponent)
 		},
 		// 选中上一个
-		selectPrevComponent: (state: INIT_STATE_TYPE) => {
+		selectPrevComponent: (state: QUESTION_INIT_STATE_TYPE) => {
 			const { selectedId, componentList } = state
 			const selectedIndex = getCurrentSelectedComponentIndex(componentList, selectedId)
 			//未选中组件 或 选中了第一个 无法向上选择
@@ -123,7 +128,7 @@ export const questionSlice = createSlice({
 			state.selectedId = componentList[selectedIndex - 1].fe_id
 		},
 		// 选中下一个
-		selectNextComponent: (state: INIT_STATE_TYPE) => {
+		selectNextComponent: (state: QUESTION_INIT_STATE_TYPE) => {
 			const { selectedId, componentList } = state
 			const selectedIndex = getCurrentSelectedComponentIndex(componentList, selectedId)
 			// 未选中组件
@@ -135,7 +140,7 @@ export const questionSlice = createSlice({
 		},
 		// 修改组件标题
 		changeComponentTitle: (
-			state: INIT_STATE_TYPE,
+			state: QUESTION_INIT_STATE_TYPE,
 			action: PayloadAction<{ fe_id: string; title: string }>
 		) => {
 			const { componentList } = state
