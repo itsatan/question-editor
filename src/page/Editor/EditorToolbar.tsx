@@ -6,6 +6,8 @@ import {
 	LockOutlined,
 	CopyOutlined,
 	BlockOutlined,
+	UpOutlined,
+	DownOutlined,
 } from '@ant-design/icons'
 import { useDispatch } from 'react-redux'
 import {
@@ -14,12 +16,21 @@ import {
 	deleteSelectedComponent,
 	copyCurrentSelectedComponent,
 	pasteCopiedComponent,
+	moveComponent,
 } from '@/store/question'
+import { getCurrentSelectedComponentIndex } from '@/store/question/utils'
 import useGetComponentInfo from '@/hooks/useGetComponentInfo'
 
 const EditorToolbar: React.FC = () => {
 	const { selectedId, componentList, selectedComponent, copiedComponent } = useGetComponentInfo()
 	const { isLocked } = selectedComponent || {}
+
+	// 上移/下移 控制禁用按钮
+	const length = componentList.length
+	const selectedIndex = getCurrentSelectedComponentIndex(componentList, selectedId)
+	const isFirst = selectedIndex <= 0 // 当前选中组件为第一个，无法上移
+	const isLast = selectedIndex + 1 >= length // 当前选中组件为最后一个，无法下移
+
 	const dispatch = useDispatch()
 	// 计算非隐藏组件的数量（控制隐藏按钮是否可用）
 	const noHiddenCount = useMemo(
@@ -45,6 +56,16 @@ const EditorToolbar: React.FC = () => {
 	// 粘贴
 	const handlePaste = () => {
 		dispatch(pasteCopiedComponent())
+	}
+	// 上移
+	const moveUp = () => {
+		if (isFirst) return
+		dispatch(moveComponent({ oldIndex: selectedIndex, newIndex: selectedIndex - 1 }))
+	}
+	// 下移
+	const moveDown = () => {
+		if (isLast) return
+		dispatch(moveComponent({ oldIndex: selectedIndex, newIndex: selectedIndex + 1 }))
 	}
 	return (
 		<Space size="middle">
@@ -79,6 +100,12 @@ const EditorToolbar: React.FC = () => {
 					onClick={handlePaste}
 					disabled={copiedComponent === null}
 				/>
+			</Tooltip>
+			<Tooltip title="上移">
+				<Button icon={<UpOutlined />} onClick={moveUp} disabled={!selectedId || isFirst} />
+			</Tooltip>
+			<Tooltip title="下移">
+				<Button icon={<DownOutlined />} onClick={moveDown} disabled={!selectedId || isLast} />
 			</Tooltip>
 		</Space>
 	)

@@ -15,3 +15,8 @@ html,body {
         display: none;
     }
 }
+
+/* dnd-kit 拖拽排序 清除默认样式 */
+div[role="button"] {
+    outline: none;
+}
