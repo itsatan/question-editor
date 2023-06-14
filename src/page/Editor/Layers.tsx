@@ -8,8 +8,10 @@ import {
 	changeComponentHidden,
 	changeComponentTitle,
 	changeSelectedId,
+	moveComponent,
 	toggleComponentLocked,
 } from '@/store/question'
+import { SortableContainer, SortableItem } from '@/common'
 import styles from './Layers.module.scss'
 
 const Layers: React.FC = () => {
@@ -56,8 +58,17 @@ const Layers: React.FC = () => {
 		dispatch(toggleComponentLocked({ fe_id }))
 	}
 
+	// 添加ID
+	const componentListWithId = componentList.map(item => ({ ...item, id: item.fe_id }))
+
+	// 拖拽结束触发
+	const handleDragEnd = (oldIndex: number, newIndex: number) => {
+		dispatch(moveComponent({ oldIndex, newIndex }))
+	}
+
 	return (
-		<>
+		// 拖拽排序容器
+		<SortableContainer items={componentListWithId} onDragEnd={handleDragEnd}>
 			{componentList.map(c => {
 				const { fe_id, title, isHidden, isLocked } = c
 				// 控制className
@@ -66,43 +77,46 @@ const Layers: React.FC = () => {
 					[styles.selected]: fe_id === selectedId,
 				})
 				return (
-					<div key={fe_id} className={styles['editor-layers-wrapper']}>
-						<div className={classes} onClick={() => handleTitleClick(fe_id)}>
-							{fe_id === changingTitle && (
-								<Input
-									ref={inputRef}
-									value={title}
-									onChange={changeTitle}
-									onPressEnter={() => setChangingTitle('')}
-									onBlur={() => setChangingTitle('')}
-								/>
-							)}
-							{fe_id !== changingTitle && title}
+					// 拖拽排序Item
+					<SortableItem key={fe_id} id={fe_id}>
+						<div className={styles['editor-layers-wrapper']}>
+							<div className={classes} onClick={() => handleTitleClick(fe_id)}>
+								{fe_id === changingTitle && (
+									<Input
+										ref={inputRef}
+										value={title}
+										onChange={changeTitle}
+										onPressEnter={() => setChangingTitle('')}
+										onBlur={() => setChangingTitle('')}
+									/>
+								)}
+								{fe_id !== changingTitle && title}
+							</div>
+							<div className={styles.handler}>
+								<Space>
+									<Button
+										size="small"
+										shape="circle"
+										className={!isHidden ? styles.btn : ''}
+										type={isHidden ? 'primary' : 'text'}
+										icon={<EyeInvisibleOutlined />}
+										onClick={() => toggleHidden(fe_id, !isHidden)}
+									/>
+									<Button
+										size="small"
+										shape="circle"
+										className={!isLocked ? styles.btn : ''}
+										type={isLocked ? 'primary' : 'text'}
+										icon={<LockOutlined />}
+										onClick={() => toggleLocked(fe_id)}
+									/>
+								</Space>
+							</div>
 						</div>
-						<div className={styles.handler}>
-							<Space>
-								<Button
-									size="small"
-									shape="circle"
-									className={!isHidden ? styles.btn : ''}
-									type={isHidden ? 'primary' : 'text'}
-									icon={<EyeInvisibleOutlined />}
-									onClick={() => toggleHidden(fe_id, !isHidden)}
-								/>
-								<Button
-									size="small"
-									shape="circle"
-									className={!isLocked ? styles.btn : ''}
-									type={isLocked ? 'primary' : 'text'}
-									icon={<LockOutlined />}
-									onClick={() => toggleLocked(fe_id)}
-								/>
-							</Space>
-						</div>
-					</div>
+					</SortableItem>
 				)
 			})}
-		</>
+		</SortableContainer>
 	)
 }
 

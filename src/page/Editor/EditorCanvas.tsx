@@ -4,9 +4,10 @@ import { useDispatch } from 'react-redux'
 import { LoadingOutlined } from '@ant-design/icons'
 import classNames from 'classnames'
 import { getComponentConfByType } from '@/components'
+import { SortableContainer, SortableItem } from '@/common'
 import useGetComponentInfo from '@/hooks/useGetComponentInfo'
 import useBindCanvasKeyPress from '@/hooks/useBindCanvasKeyPress'
-import { ComponentInfoType, changeSelectedId } from '@/store/question'
+import { ComponentInfoType, changeSelectedId, moveComponent } from '@/store/question'
 import styles from './EditorCanvas.module.scss'
 
 type EditorCanvasPropsType = {
@@ -36,6 +37,14 @@ const EditorCanvas: React.FC<EditorCanvasPropsType> = props => {
 		dispatch(changeSelectedId(fe_id))
 	}
 
+	// 添加ID
+	const componentListWithId = componentList.map(item => ({ ...item, id: item.fe_id }))
+
+	// 拖拽结束触发
+	const handleDragEnd = (oldIndex: number, newIndex: number) => {
+		dispatch(moveComponent({ oldIndex, newIndex }))
+	}
+
 	if (loading) {
 		return (
 			<div style={{ height: '100%', background: '#fff', textAlign: 'center', paddingTop: 150 }}>
@@ -45,28 +54,28 @@ const EditorCanvas: React.FC<EditorCanvasPropsType> = props => {
 	}
 
 	return (
-		<div className={styles['editor-canvas']}>
-			{componentList
-				.filter(c => !c.isHidden)
-				.map(c => {
-					const { fe_id, isLocked } = c
-					// 控制className
-					const classes = classNames({
-						[styles['editor-component-wrapper']]: true,
-						[styles['editor-selected']]: selectedId === fe_id,
-						[styles['editor-locked']]: isLocked,
-					})
-					return (
-						<div
-							key={fe_id}
-							className={classes}
-							onClick={event => handleChangeSelectedId(event, fe_id)}
-						>
-							<div className={styles['editor-component']}>{genComponent(c)}</div>
-						</div>
-					)
-				})}
-		</div>
+		<SortableContainer items={componentListWithId} onDragEnd={handleDragEnd}>
+			<div className={styles['editor-canvas']}>
+				{componentList
+					.filter(c => !c.isHidden)
+					.map(c => {
+						const { fe_id, isLocked } = c
+						// 控制className
+						const classes = classNames({
+							[styles['editor-component-wrapper']]: true,
+							[styles['editor-selected']]: selectedId === fe_id,
+							[styles['editor-locked']]: isLocked,
+						})
+						return (
+							<SortableItem key={fe_id} id={fe_id}>
+								<div className={classes} onClick={event => handleChangeSelectedId(event, fe_id)}>
+									<div className={styles['editor-component']}>{genComponent(c)}</div>
+								</div>
+							</SortableItem>
+						)
+					})}
+			</div>
+		</SortableContainer>
 	)
 }
 
