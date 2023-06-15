@@ -5,6 +5,7 @@
         "downarrow",
         "immer",
         "reduxjs",
+        "undoable",
         "uparrow"
     ]
 }

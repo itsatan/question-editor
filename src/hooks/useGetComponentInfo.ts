@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux'
 import type { STATE_TYPE } from '@/store'
 
 const useGetComponentInfo = () => {
-	const question = useSelector((state: STATE_TYPE) => state.question)
+	const question = useSelector((state: STATE_TYPE) => state.question.present) // undo/redo 获取当前数据
 
 	const { selectedId = '', componentList = [], copiedComponent } = question
 
