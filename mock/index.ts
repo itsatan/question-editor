@@ -18,23 +18,35 @@ export default {
 			isHidden: false,
 			isLocked: false,
 			props: {
-				title: '测试问卷标题',
-				desc: '描述...',
+				title: 'Github调查问卷',
+				desc: 'https://github.com/itsatan',
 			},
 		},
 		// Title
-		{
-			fe_id: nanoid(),
-			type: 'QuestionTitle',
-			title: '标题',
-			isHidden: false,
-			isLocked: false,
-			props: {
-				text: '个人信息调研',
-				level: 1,
-				isCenter: false,
-			},
-		},
+		// {
+		// 	fe_id: nanoid(),
+		// 	type: 'QuestionTitle',
+		// 	title: '标题',
+		// 	isHidden: false,
+		// 	isLocked: false,
+		// 	props: {
+		// 		text: '个人基本信息',
+		// 		level: 3,
+		// 		isCenter: true,
+		// 	},
+		// },
+		// Paragraph
+		// {
+		// 	fe_id: nanoid(),
+		// 	type: 'QuestionParagraph',
+		// 	title: '段落',
+		// 	isHidden: false,
+		// 	isLocked: false,
+		// 	props: {
+		// 		text: '曾像夜那么黑 每个清晨\n曾阻挡每个梦 每一道门',
+		// 		isCenter: false,
+		// 	},
+		// },
 		// Input
 		{
 			fe_id: nanoid(),
@@ -47,28 +59,16 @@ export default {
 				placeholder: '请输入你的姓名',
 			},
 		},
-		// Paragraph
+		// Input
 		{
 			fe_id: nanoid(),
-			type: 'QuestionParagraph',
-			title: '段落',
+			type: 'QuestionInput',
+			title: '输入框',
 			isHidden: false,
 			isLocked: false,
 			props: {
-				text: '这是一行段落',
-				isCenter: false,
-			},
-		},
-		// TextArea
-		{
-			fe_id: nanoid(),
-			type: 'QuestionTextArea',
-			title: '多行输入框',
-			isHidden: false,
-			isLocked: false,
-			props: {
-				title: '多行输入标题',
-				placeholder: '请输入...',
+				title: '你的年龄',
+				placeholder: '请输入你的年龄',
 			},
 		},
 		// Radio
@@ -79,12 +79,12 @@ export default {
 			isHidden: false,
 			isLocked: false,
 			props: {
-				title: '单选标题',
-				value: undefined,
+				title: '你最喜欢使用哪个框架？',
+				value: 'react',
 				radio_options: [
-					{ label: '选项1', value: '1' },
-					{ label: '选项2', value: '2' },
-					{ label: '选项3', value: '3' },
+					{ label: 'React', value: 'react' },
+					{ label: 'Vue', value: 'vue' },
+					{ label: 'Angular', value: 'angular' },
 				],
 				isVertical: false,
 			},
@@ -97,15 +97,26 @@ export default {
 			isHidden: false,
 			isLocked: false,
 			props: {
-				title: '复选标题',
-				value: undefined,
+				title: '你期望在哪个城市工作？',
 				checkbox_options: [
-					{ label: '选项1', value: '1', checked: false },
-					{ label: '选项2', value: '2', checked: false },
-					{ label: '选项3', value: '3', checked: false },
-					{ label: '选项4', value: '4', checked: false },
+					{ label: '北京', value: 'beijing', checked: true },
+					{ label: '上海', value: 'shanghai', checked: false },
+					{ label: '深圳', value: 'shenzhen', checked: false },
+					{ label: '杭州', value: 'hangzhou', checked: true },
 				],
 				isVertical: false,
+			},
+		},
+		// TextArea
+		{
+			fe_id: nanoid(),
+			type: 'QuestionTextArea',
+			title: '多行输入框',
+			isHidden: false,
+			isLocked: false,
+			props: {
+				title: '自我评价',
+				placeholder: '请输入自我评价',
 			},
 		},
 	],
